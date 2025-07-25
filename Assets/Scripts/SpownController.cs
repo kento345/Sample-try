@@ -6,11 +6,11 @@ public class SpownController : MonoBehaviour
     [SerializeField] private GameObject enemy_;
     private int maxEnemy = 24;
     private int CountEnemy = 0;
-    private EnemyController enemyScript;
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        enemyScript = GetComponent<EnemyController>();
+        
     }
 
     // Update is called once per frame
@@ -23,10 +23,11 @@ public class SpownController : MonoBehaviour
     {
         if(CountEnemy < maxEnemy)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(-35f, 35f), Random.Range(-10f,0f), 20f);
+            Vector3 spawnPosition = new Vector3(Random.Range(-35f, 35f), Random.Range(-10f,0f), 15f);
 
             Instantiate(enemy_, spawnPosition, transform.rotation);
             CountEnemy++;
         }
+        
     }
 }
