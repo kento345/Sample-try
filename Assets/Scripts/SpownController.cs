@@ -12,23 +12,23 @@ public class SpownController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-      
+        Spow();
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        Spow();
+       
     }
     void Spow()
     {
-/*        for(int i = 0;i < 24;i++)
+        for (int i = 0; i < 24; i++)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(-35f, 35f), Random.Range(-10f, 0f), 15f);
             allEnemy_[i] = Instantiate(enemy_, spawnPosition, transform.rotation);
 
-        }*/
-        
+        }
+
     }
 }

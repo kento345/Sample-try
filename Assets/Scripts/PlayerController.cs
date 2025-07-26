@@ -17,18 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private float move_ = 1.0f;
     //-----視野角-----
-    [SerializeField] private GameObject enemyPrefabu;
-
-    public GameObject[] enemys_ = new GameObject[24];
-
-
-
-
-    [SerializeField] private float viewAngle_ = 30.0f;
-    private EnemyController enemy = null;
-
-    private Matrix4x4 worldMatrix = Matrix4x4.identity;
-
+    private EnemyController enemyController_;
 
 
 
@@ -41,6 +30,7 @@ public class PlayerController : MonoBehaviour
     {
         camera_ = Camera.main.transform;
         player_ = GetComponent<Transform>();
+        enemyController_ = GetComponent<EnemyController>();
 
     }
 
