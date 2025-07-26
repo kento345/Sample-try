@@ -5,6 +5,11 @@ public class EnemyController : MonoBehaviour
 {
     //-----移動-----
     private float InitPos;
+
+
+    //-----  -----
+   
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

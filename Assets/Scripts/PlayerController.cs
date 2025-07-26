@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -14,11 +16,24 @@ public class PlayerController : MonoBehaviour
     private Transform camera_;
 
     private float move_ = 1.0f;
+    //-----視野角-----
+    [SerializeField] private GameObject enemyPrefabu;
+
+    public GameObject[] enemys_ = new GameObject[24];
+
+
+
+
+    [SerializeField] private float viewAngle_ = 30.0f;
+    private EnemyController enemy = null;
+
+    private Matrix4x4 worldMatrix = Matrix4x4.identity;
+
+
+
+
     //-----弾発射-----
-    [SerializeField] private GameObject bulletPrefab_;
-    private Bullet bullet_;
-    private GameObject catapult_;
-    //[SerializeField] private InputAction fire_;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,8 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         camera_ = Camera.main.transform;
         player_ = GetComponent<Transform>();
-        FindCatapult();
-        InstantiateBullet();
+
     }
 
     // Update is called once per frame
@@ -35,15 +49,19 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Rota();
+        Viewing();
     }
     private void LateUpdate()
     {
-        if (!bullet_)
+/*        for (int i = 0; i < 8; i++)
         {
-            return;
-        }
+            if (!bullets[i])
+            {
+                return;
+            }
 
-        GameController.instance.CanHitEnemy(bullet_);
+            GameController.instance.CanHitEnemy(bullets[i]);
+        }*/
     }
     void Move()
     {
@@ -66,44 +84,26 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKey(KeyCode.LeftArrow))
         {     
-                q = Quaternion.AngleAxis(-move_, player_.up);
+                q = Quaternion.AngleAxis(-move_, camera_.up);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            q = Quaternion.AngleAxis(move_, player_.up);
+            q = Quaternion.AngleAxis(move_, camera_.up);
         }
        
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            q = Quaternion.AngleAxis(-move_, player_.right);
+            q = Quaternion.AngleAxis(-move_, camera_.right);
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            q = Quaternion.AngleAxis(move_, player_.right);
+            q = Quaternion.AngleAxis(move_, camera_.right);
         }
 
         transform.rotation = q * transform.rotation;
     }
-    public void OnFirePerformed(InputAction.CallbackContext context)
+    void Viewing()
     {
-        if(context.phase == InputActionPhase.Canceled)
-        {
-            bullet_.transform.SetParent(null);
-            bullet_.Fire(catapult_.transform.forward);
-
-            bullet_ = null;
-            InstantiateBullet();
-        }
-    }
-    void FindCatapult()
-    {
-        catapult_ = transform.Find("Catapult")?.gameObject;
-    }
-    void InstantiateBullet()
-    {
-        if(bulletPrefab_ != null)
-        {
-            bullet_ = Instantiate(bulletPrefab_, catapult_.transform)?.GetComponent<Bullet>();
-        }
+     
     }
 }
