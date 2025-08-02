@@ -14,8 +14,11 @@ public class Bullet : MonoBehaviour
     private Vector3 currentDirection;           //移動ベクトル
     private Transform targetEnemy;              //敵ターゲット
 
+    public float radius => transform.localScale.x * 0.5f;
+
     void Start()
     {
+       
         //初期進行方向を前方に設定
         currentDirection = transform.forward;
     }
@@ -36,6 +39,7 @@ public class Bullet : MonoBehaviour
     //弾を通過点を通過させて敵にホーミングさせる
     void BulletMove()
     {
+        
         if (target == null && !CheckPoint)
         {
             Destroy(gameObject);
@@ -72,6 +76,16 @@ public class Bullet : MonoBehaviour
             //前進
             transform.position += currentDirection * speed * Time.deltaTime;
         }
+ /*       GameObject controllerObj = GameObject.FindWithTag("GameController");
+        if (controllerObj != null)
+        {
+            GameController controller = controllerObj.GetComponent<GameController>();
+            if (controller != null)
+            {
+              
+                controller.CheckHitByBullet(this); // 新規に作る処理（後述）
+            }
+        }*/
     }
 }
 

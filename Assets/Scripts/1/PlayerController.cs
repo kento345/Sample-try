@@ -20,12 +20,22 @@ public class PlayerController : MonoBehaviour
 
     private Transform camera_;
 
+   [SerializeField] private GameObject bullet_;
+
     //-----その他-----
     [SerializeField] private GameController GMController;
 
+
+    [SerializeField] private Bullet bullet;
+
+
     public void OnShot(InputAction.CallbackContext context)
     {
-        if(context.canceled)
+       /* if (context.performed)
+        {
+            GMController.CanHitEnemy(bullet);
+        }*/
+        if (context.canceled)
         {
             GMController.BulletCrea();
         }
@@ -33,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+         //bullet = 
         camera_ = Camera.main.transform;
     }
 

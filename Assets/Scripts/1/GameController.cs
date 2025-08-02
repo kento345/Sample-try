@@ -15,16 +15,18 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject catapalut_;               // 弾の生成場所
     public List<GameObject> FirPos  = new List<GameObject>();     //生成した弾のList
     private Bullet bullet;                                        //弾のScript
+    private SpownController spownController;
+    //-----敵判定-----
+    private const int MaxCheckCount = 8;
 
     private void Start()
     {
+        spownController = GetComponent<SpownController>();
         //通過点の場所生成
        CheckPoint();
        
     }
-    /// <summary>
-    /// 通過点を円状に配置する
-    /// </summary>
+    //-----通過点を円状に配置する-----
     void CheckPoint()
     {
         //半径２の円
@@ -45,7 +47,70 @@ public class GameController : MonoBehaviour
           
         }
     }
-    //弾の生成
+
+  /*  /// <summary>
+    /// 敵に弾が当たるかどうかをチェックする
+    /// </summary>
+    /// <returns></returns>
+    public void CanHitEnemy(Bullet bullet)
+    {
+        var enemies_ = spownController.allEnemies;
+
+        if (enemies_ == null || enemies_.Count == 0) return;
+
+        int hitCount = 0;
+
+        foreach (var enemy in enemies_)
+        {
+            if (!enemy) continue;
+
+            var playerToEnemy = (enemy.transform.position - bullet.transform.position);
+            var dot = Vector3.Dot(bullet.transform.forward, playerToEnemy);
+            var nearPos = bullet.transform.position + (bullet.transform.forward * dot);
+            var size = bullet.radius + (enemy.transform.localScale.x * 0.5f);
+
+            if (Vector3.Distance(enemy.transform.position, nearPos) < size)
+            {
+                enemy.GetComponent<Renderer>().material.color = Color.red;
+                hitCount++;
+            }
+            else
+            {
+                enemy.GetComponent<Renderer>().material.color = Color.white;
+            }
+
+            if (hitCount >= 8)
+            {
+                break;
+            }
+        }
+    }
+    public void CheckHitByBullet(Bullet bullet)
+    {
+        if (spownController == null || spownController.allEnemies.Count == 0) return;
+
+        int hitCount = 0;
+
+        foreach (var enemy in spownController.allEnemies)
+        {
+            if (!enemy) continue;
+
+            float size = 0.5f + (enemy.transform.localScale.x * 0.5f); // 弾サイズ固定なら0.5でよい
+
+            if (Vector3.Distance(enemy.transform.position, bullet.transform.position) < size)
+            {
+                enemy.GetComponent<Renderer>().material.color = Color.red;
+                hitCount++;
+            }
+
+            if (hitCount >= MaxCheckCount)
+            {
+                break;
+            }
+        }
+    }*/
+
+    //-----弾の生成-----
     public void BulletCrea()
     {
         for (int i = 0;i < 8;i++)
@@ -67,7 +132,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    //一番近い敵の判定
+    //-----一番近い敵の判定-----
     Transform GetNeartEnemy(Vector3 fromPosition, List<GameObject> candidates)
     {
         float minDistance = Mathf.Infinity;
