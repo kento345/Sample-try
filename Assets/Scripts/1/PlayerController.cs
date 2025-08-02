@@ -22,28 +22,34 @@ public class PlayerController : MonoBehaviour
 
    [SerializeField] private GameObject bullet_;
 
+   
+
     //-----その他-----
     [SerializeField] private GameController GMController;
 
 
     [SerializeField] private Bullet bullet;
 
-
+    private bool isHighlighting = false;
     public void OnShot(InputAction.CallbackContext context)
     {
-       /* if (context.performed)
+        if (context.performed)
         {
-            GMController.CanHitEnemy(bullet);
-        }*/
+           isHighlighting = true;
+        }
         if (context.canceled)
         {
             GMController.BulletCrea();
+            isHighlighting = false;
         }
+    }
+    private void Awake()
+    {
+        
     }
 
     private void Start()
     {
-         //bullet = 
         camera_ = Camera.main.transform;
     }
 
@@ -51,6 +57,11 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Rotate();
+
+        if (isHighlighting)
+        {
+            GMController.CanHitEnemy(transform);
+        }
     }
 
     void Move()

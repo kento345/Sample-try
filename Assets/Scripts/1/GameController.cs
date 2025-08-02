@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -48,44 +50,9 @@ public class GameController : MonoBehaviour
         }
     }
 
-  /*  /// <summary>
-    /// 敵に弾が当たるかどうかをチェックする
-    /// </summary>
-    /// <returns></returns>
-    public void CanHitEnemy(Bullet bullet)
-    {
-        var enemies_ = spownController.allEnemies;
+    
 
-        if (enemies_ == null || enemies_.Count == 0) return;
-
-        int hitCount = 0;
-
-        foreach (var enemy in enemies_)
-        {
-            if (!enemy) continue;
-
-            var playerToEnemy = (enemy.transform.position - bullet.transform.position);
-            var dot = Vector3.Dot(bullet.transform.forward, playerToEnemy);
-            var nearPos = bullet.transform.position + (bullet.transform.forward * dot);
-            var size = bullet.radius + (enemy.transform.localScale.x * 0.5f);
-
-            if (Vector3.Distance(enemy.transform.position, nearPos) < size)
-            {
-                enemy.GetComponent<Renderer>().material.color = Color.red;
-                hitCount++;
-            }
-            else
-            {
-                enemy.GetComponent<Renderer>().material.color = Color.white;
-            }
-
-            if (hitCount >= 8)
-            {
-                break;
-            }
-        }
-    }
-    public void CheckHitByBullet(Bullet bullet)
+    /*public void CheckHitByBullet(Bullet bullet)
     {
         if (spownController == null || spownController.allEnemies.Count == 0) return;
 
@@ -129,6 +96,52 @@ public class GameController : MonoBehaviour
 
                 remainingEnemies.Remove(neraEnemy.gameObject);
             }*/
+        }
+    }
+
+    public void CanHitEnemy(Transform player)
+    {
+        if (spownController == null || spownController.allEnemies.Count == 0 || player == null)
+        {
+            return;
+        }
+
+        List<(GameObject enemy, float dot, float dist)> candistes = new();
+
+        Vector3 playerPos = player.position;
+        Vector3 playerFwd = player.forward;
+
+        foreach (var enemy in spownController.allEnemies)
+        {
+            if (!enemy)
+            { continue; }
+
+            Vector3 toEnemy = (enemy.transform.position - playerPos).normalized;
+            float dot = Vector3.Dot(playerFwd.normalized, toEnemy);
+
+            if (dot > 0.9f)
+            {
+                float distance = Vector3.Distance(playerPos, enemy.transform.position);
+                candistes.Add((enemy, dot, distance));
+            }
+        }
+
+        foreach (var enemy in spownController.allEnemies)
+        {
+            if (enemy != null)
+            {
+                enemy.GetComponent<Renderer>().material.color = Color.white;
+            }
+        }
+
+        var sorted = candistes.OrderByDescending(enabled => enabled.dot).ThenBy(enabled => enabled.dist).Take(8);
+
+        foreach (var (enemy, _, _) in sorted)
+        {
+            if(enemy != null)
+            {
+                enemy.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
     }
 
