@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     private Transform camera_;
 
-   [SerializeField] private GameObject bullet_;
+   //[SerializeField] private GameObject bullet_;
 
    
 
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameController GMController;
 
 
-    [SerializeField] private Bullet bullet;
+    //[SerializeField] private Bullet bullet;
 
     private bool isHighlighting = false;
     public void OnShot(InputAction.CallbackContext context)

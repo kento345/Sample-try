@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     private Bullet bullet;                                        //弾のScript
     private SpownController spownController;
     //-----敵判定-----
-    private const int MaxCheckCount = 8;
+    private List<GameObject> redEnemies = new List<GameObject>(); //赤くしている敵のList
 
     private void Start()
     {
@@ -50,33 +50,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
-
-    /*public void CheckHitByBullet(Bullet bullet)
-    {
-        if (spownController == null || spownController.allEnemies.Count == 0) return;
-
-        int hitCount = 0;
-
-        foreach (var enemy in spownController.allEnemies)
-        {
-            if (!enemy) continue;
-
-            float size = 0.5f + (enemy.transform.localScale.x * 0.5f); // 弾サイズ固定なら0.5でよい
-
-            if (Vector3.Distance(enemy.transform.position, bullet.transform.position) < size)
-            {
-                enemy.GetComponent<Renderer>().material.color = Color.red;
-                hitCount++;
-            }
-
-            if (hitCount >= MaxCheckCount)
-            {
-                break;
-            }
-        }
-    }*/
-
     //-----弾の生成-----
     public void BulletCrea()
     {
@@ -89,13 +62,11 @@ public class GameController : MonoBehaviour
 
 
             //通過点通過後の敵追尾8体の敵Listをtargetに
-/*          Transform neraEnemy = GetNeartEnemy(bulletObj.transform.position, remainingEnemies);
-            if (i < targetEnemies.Count)
-            {
-                bullet.SetEnemy(neraEnemy);
 
-                remainingEnemies.Remove(neraEnemy.gameObject);
-            }*/
+            if (i < redEnemies.Count)
+            {
+                bullet.SetEnemy(redEnemies[i].transform);
+            }
         }
     }
 
@@ -105,6 +76,8 @@ public class GameController : MonoBehaviour
         {
             return;
         }
+
+        redEnemies.Clear();
 
         List<(GameObject enemy, float dot, float dist)> candistes = new();
 
@@ -141,30 +114,9 @@ public class GameController : MonoBehaviour
             if(enemy != null)
             {
                 enemy.GetComponent<Renderer>().material.color = Color.red;
+                redEnemies.Add(enemy);
             }
         }
     }
-
-    //-----一番近い敵の判定-----
-    Transform GetNeartEnemy(Vector3 fromPosition, List<GameObject> candidates)
-    {
-        float minDistance = Mathf.Infinity;
-        Transform closest = null;
-
-        foreach (var enemyObj in candidates)
-        {
-            if (enemyObj == null) continue;
-
-            float dist = Vector3.Distance(fromPosition, enemyObj.transform.position);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closest = enemyObj.transform;
-            }
-        }
-
-        return closest;
-    }
-
 }
     

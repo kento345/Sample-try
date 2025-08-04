@@ -14,7 +14,6 @@ public class Bullet : MonoBehaviour
     private Vector3 currentDirection;           //移動ベクトル
     private Transform targetEnemy;              //敵ターゲット
 
-    public float radius => transform.localScale.x * 0.5f;
 
     void Start()
     {
@@ -76,16 +75,26 @@ public class Bullet : MonoBehaviour
             //前進
             transform.position += currentDirection * speed * Time.deltaTime;
         }
- /*       GameObject controllerObj = GameObject.FindWithTag("GameController");
-        if (controllerObj != null)
+        //-----当たり判定-----
+
+        float hitThreshould = 0.5f;
+        if (Vector3.Distance(transform.position, targetEnemy.position) < hitThreshould)
         {
-            GameController controller = controllerObj.GetComponent<GameController>();
-            if (controller != null)
+            Renderer renderer = targetEnemy.GetComponent<Renderer>();
+            if (renderer != null)
             {
-              
-                controller.CheckHitByBullet(this); // 新規に作る処理（後述）
+                renderer.material.color = Color.yellow;
             }
-        }*/
+
+            EnemyController ec = targetEnemy.GetComponent<EnemyController>();
+            if (ec != null)
+            {
+                ec.StartCoroutine(ec.Shake(0.3f,0.2f));
+            }
+
+            Destroy(gameObject);
+        }
+
     }
 }
 
