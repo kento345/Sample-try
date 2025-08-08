@@ -67,6 +67,7 @@ public class GameController : MonoBehaviour
             {
                 bullet.SetEnemy(redEnemies[i].transform);
             }
+
         }
     }
 

@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviour
        
         //初期進行方向を前方に設定
         currentDirection = transform.forward;
+        Destroy(gameObject,4f);
     }
     private void Update()
     {
@@ -76,25 +77,26 @@ public class Bullet : MonoBehaviour
             transform.position += currentDirection * speed * Time.deltaTime;
         }
         //-----当たり判定-----
-
-        float hitThreshould = 0.5f;
-        if (Vector3.Distance(transform.position, targetEnemy.position) < hitThreshould)
+        if (targetEnemy != null)
         {
-            Renderer renderer = targetEnemy.GetComponent<Renderer>();
-            if (renderer != null)
+            float hitThreshould = 0.5f;
+            if (Vector3.Distance(transform.position, targetEnemy.position) < hitThreshould)
             {
-                renderer.material.color = Color.yellow;
-            }
+                Renderer renderer = targetEnemy.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material.color = Color.yellow;
+                }
 
-            EnemyController ec = targetEnemy.GetComponent<EnemyController>();
-            if (ec != null)
-            {
-                ec.StartCoroutine(ec.Shake(0.3f,0.2f));
-            }
+                EnemyController ec = targetEnemy.GetComponent<EnemyController>();
+                if (ec != null)
+                {
+                    ec.StartCoroutine(ec.Shake(0.3f, 0.2f));
+                }
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
         }
-
     }
 }
 
