@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        camera_ = Camera.main.transform;
+        //camera_ = Camera.main.transform;
     }
 
     private void Update()

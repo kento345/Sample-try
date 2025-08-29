@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
-public class Bullet : MonoBehaviour
+public class BulletController : MonoBehaviour
 {
     //-----弾の移動-----
     private Transform target;                   // 通過点ターゲット          

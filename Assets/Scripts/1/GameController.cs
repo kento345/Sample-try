@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject bullePrefab_;             //弾のプレファブ
     [SerializeField] private GameObject catapalut_;               // 弾の生成場所
     public List<GameObject> FirPos  = new List<GameObject>();     //生成した弾のList
-    private Bullet bullet;                                        //弾のScript
+    private BulletController bullet;                                        //弾のScript
     private SpownController spownController;
     //-----敵判定-----
     private List<GameObject> redEnemies = new List<GameObject>(); //赤くしている敵のList
@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
         {
             GameObject bulletObj = Instantiate(bullePrefab_, catapalut_.transform.position, Quaternion.identity);
 
-            bullet = bulletObj.GetComponent<Bullet>();
+            bullet = bulletObj.GetComponent<BulletController>();
             bullet.SetTarget(FirPos[i].transform); // 各弾に異なる通過点を設定
 
 
